@@ -20,7 +20,7 @@ jobs:
         run: npm install -g @terraform-visual/cli
 
       - name: Generate Diagram
-        run: terraform-visual --dir ./terraform/dev
+        run: terraform-visual --plan terraform/dev/plan.json
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
