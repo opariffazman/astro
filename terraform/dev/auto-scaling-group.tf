@@ -33,6 +33,8 @@ module "app_asg" {
     }
   }
 
+  iam_role_name = module.app_iam_role.iam_instance_profile_id
+
   tags = var.tags
 }
 
