@@ -18,7 +18,7 @@ module "rds" {
 
   iam_database_authentication_enabled = true
   multi_az                            = false
-  db_subnet_group_name                = module.vpc.database_subnet_group
+  db_subnet_group_name                = module.vpc.database_subnet_group_name
   vpc_security_group_ids              = [module.db_security_group.security_group_id]
 
   skip_final_snapshot = true
