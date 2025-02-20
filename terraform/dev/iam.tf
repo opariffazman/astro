@@ -4,7 +4,7 @@ module "app_iam_role" {
 
   create_role = true
   role_name   = "${var.project_name}-app-role"
-  
+
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
     "arn:aws:iam::aws:policy/CloudWatchFullAccess",

@@ -22,8 +22,8 @@ module "route53_records" {
 
   records = [
     {
-      name    = "app"
-      type    = "A"
+      name = "app"
+      type = "A"
       alias = {
         name    = module.app_alb.dns_name
         zone_id = module.app_alb.zone_id

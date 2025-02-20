@@ -9,7 +9,7 @@ module "app_alb" {
   security_groups = [module.app_security_group.security_group_id]
 
   target_groups = {
-   app-asg = {
+    app-asg = {
       name             = "${var.project_name}-app-tg"
       backend_protocol = "HTTP"
       backend_port     = 8080
@@ -45,7 +45,7 @@ module "web_alb" {
   security_groups = [module.web_security_group.security_group_id]
 
   target_groups = {
-   web-asg = {
+    web-asg = {
       name             = "${var.project_name}-web-tg"
       backend_protocol = "HTTP"
       backend_port     = 8080
