@@ -18,8 +18,8 @@ module "route53_records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "4.1.0"
 
-  zone_id = values(module.route53_private.route53_zone_zone_id)[0]
-
+  zone_name = keys(module.route53_private.route53_zone_zone_id)[0]
+  
   records = [
     {
       name = "app"
