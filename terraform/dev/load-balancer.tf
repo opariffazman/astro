@@ -26,7 +26,7 @@ module "app_alb" {
         timeout             = 6
         protocol            = "HTTP"
       }
-      
+
       create_attachment = false
     }
   ]
