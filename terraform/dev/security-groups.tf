@@ -2,8 +2,8 @@ module "web_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "web-tier-sg"
-  description = "Security group for web tier"
+  name        = "web-sg"
+  description = "Security group for web"
   vpc_id      = module.vpc.vpc_id
 
   ingress_with_cidr_blocks = [
@@ -39,8 +39,8 @@ module "app_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "app-tier-sg"
-  description = "Security group for application tier"
+  name        = "app-sg"
+  description = "Security group for application"
   vpc_id      = module.vpc.vpc_id
 
   ingress_with_source_security_group_id = [
@@ -69,8 +69,8 @@ module "db_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "data-tier-sg"
-  description = "Security group for database tier"
+  name        = "database-sg"
+  description = "Security group for database"
   vpc_id      = module.vpc.vpc_id
 
   ingress_with_source_security_group_id = [
