@@ -9,8 +9,8 @@ module "app_alb" {
   # Security Group
   security_groups = [module.app_security_group.security_group_id]
 
-  target_groups = [
-    {
+  target_groups = {
+   app-asg = {
       name             = "${var.project_name}-app-tg"
       backend_protocol = "HTTP"
       backend_port     = 8080
@@ -29,7 +29,7 @@ module "app_alb" {
 
       create_attachment = false
     }
-  ]
+  }
 
   tags = var.tags
 }
