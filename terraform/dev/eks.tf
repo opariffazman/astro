@@ -3,7 +3,7 @@ module "eks" {
   version = "20.33.1"
 
   cluster_name    = "${var.project_name}-cluster"
-  cluster_version = "1.31"
+  cluster_version = "1.32"
 
   vpc_id     = module.vpc.vpc_id
   subnet_ids = module.vpc.private_subnets
@@ -16,7 +16,7 @@ module "eks" {
       configuration_values = jsonencode({
         init = {
           env = {
-            DISABLE_TCP_EARLY_DEMUX = true
+            DISABLE_TCP_EARLY_DEMUX = "true"
           }
         }
       })
