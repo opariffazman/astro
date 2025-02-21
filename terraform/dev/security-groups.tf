@@ -2,7 +2,7 @@ module "web_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "web-sg"
+  name        = "${var.project_name}-web-sg"
   description = "Security group for web"
   vpc_id      = module.vpc.vpc_id
 
@@ -39,7 +39,7 @@ module "app_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "app-sg"
+  name        = "${var.project_name}-app-sg"
   description = "Security group for application"
   vpc_id      = module.vpc.vpc_id
 
@@ -69,7 +69,7 @@ module "db_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "database-sg"
+  name        = "${var.project_name}-database-sg"
   description = "Security group for database"
   vpc_id      = module.vpc.vpc_id
 

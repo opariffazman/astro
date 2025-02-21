@@ -2,7 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.33.1"
 
-  cluster_name    = "${var.project_name}-cluster"
+  cluster_name    = var.project_name
   cluster_version = "1.32"
 
   vpc_id     = module.vpc.vpc_id
@@ -25,7 +25,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     spot = {
-      name = "${var.project_name}-eks-spot"
+      name = "${var.project_name}-spot"
 
       min_size     = 1
       max_size     = 3
@@ -36,7 +36,7 @@ module "eks" {
     }
 
     ondemand = {
-      name = "${var.project_name}-eks-ondemand"
+      name = "${var.project_name}-ondemand"
 
       min_size     = 1
       max_size     = 2
