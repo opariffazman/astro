@@ -19,7 +19,7 @@ module "route53_records" {
   version = "4.1.0"
 
   zone_name = keys(module.route53_private.route53_zone_zone_id)[0]
-  
+
   records = [
     {
       name = "app"
