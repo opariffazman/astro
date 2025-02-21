@@ -1,10 +1,11 @@
-module "route53_private" {
+module "route53_zones" {
   source  = "terraform-aws-modules/route53/aws//modules/zones"
-  version = "2.11.0"
+  version = "4.1.0"
 
   zones = {
     "astro.opariffazman.com" = {
       comment = "Private hosted zone for ${var.project_name} applications"
+      tags = var.tags
       vpc = [{
         vpc_id = module.vpc.vpc_id
       }]
@@ -18,7 +19,7 @@ module "route53_records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "4.1.0"
 
-  zone_name = keys(module.route53_private.route53_zone_zone_id)[0]
+  zone_id = module.route53_zones.route53_zone_zone_id["astro.opariffazman.com"]
 
   records = [
     {
@@ -36,10 +37,10 @@ module "route53_records" {
     }
   ]
 
-  depends_on = [module.route53_private]
+  depends_on = [module.route53_zones]
 }
 
 output "route53_nameservers" {
   description = "Nameservers for the hosted zone"
-  value       = module.route53_private.route53_zone_name_servers
+  value       = module.route53_zones.route53_zone_name_servers
 }
