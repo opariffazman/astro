@@ -5,7 +5,7 @@ module "route53_zones" {
   zones = {
     "astro.opariffazman.com" = {
       comment = "Private hosted zone for ${var.project_name} applications"
-      tags = var.tags
+      tags    = var.tags
       vpc = [{
         vpc_id = module.vpc.vpc_id
       }]
