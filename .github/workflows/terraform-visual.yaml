@@ -1,4 +1,4 @@
-name: Generate Infrastructure Diagram
+name: run-terraform-visual
 
 on:
   push:
@@ -19,13 +19,13 @@ jobs:
 
       - uses: actions/setup-node@v4
 
-      - name: Install terraform-visual
+      - name: install terraform-visual
         run: npm install -g @terraform-visual/cli
 
-      - name: Generate Diagram
+      - name: run terraform-visual
         run: terraform-visual --plan terraform/dev/plan.json
 
-      - name: Deploy to GitHub Pages
+      - name: deploy to github pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
