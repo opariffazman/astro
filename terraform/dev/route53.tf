@@ -1,9 +1,13 @@
+variable "zone_name" {
+  default = "astro.opariffazman.com"
+}
+
 module "route53_zones" {
   source  = "terraform-aws-modules/route53/aws//modules/zones"
   version = "4.1.0"
 
   zones = {
-    "astro.opariffazman.com" = {
+    "${var.zone_name}" = {
       comment = "Private hosted zone for ${var.project_name} applications"
       tags    = var.tags
       vpc = [{
@@ -19,7 +23,7 @@ module "route53_records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "4.1.0"
 
-  zone_id = module.route53_zones.route53_zone_zone_id["astro.opariffazman.com"]
+  zone_name = var.zone_name
 
   records = [
     {
