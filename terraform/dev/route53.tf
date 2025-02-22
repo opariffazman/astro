@@ -23,7 +23,8 @@ module "route53_records" {
   source  = "terraform-aws-modules/route53/aws//modules/records"
   version = "4.1.0"
 
-  zone_id = values(module.route53_zones.route53_zone_zone_id)[0]
+  # https://github.com/terraform-aws-modules/terraform-aws-route53/issues/101
+  zone_name = module.route53_zones.route53_static_zone_name["${var.zone_name}"]
 
   records = [
     {
