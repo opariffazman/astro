@@ -3,7 +3,7 @@ name: run-terraform-visual
 on:
   push:
     paths:
-      - 'terraform/**'
+      - 'terraform/dev/plan.json'
     branches:
       - main
   workflow_dispatch:
