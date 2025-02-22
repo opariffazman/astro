@@ -28,5 +28,4 @@ systemctl start docker
 docker pull nginx:latest
 docker run -d -p 8080:80 nginx:latest
 
-# Health check endpoint
 echo "OK" >/var/www/html/health.html
