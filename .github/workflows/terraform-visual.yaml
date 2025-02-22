@@ -3,7 +3,7 @@ name: run-terraform-visual
 on:
   push:
     paths:
-      - 'terraform/dev/plan.json'
+      - 'terraform/assignment1/plan.json'
     branches:
       - main
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
         run: npm install -g @terraform-visual/cli
 
       - name: run terraform-visual
-        run: terraform-visual --plan terraform/dev/plan.json
+        run: terraform-visual --plan terraform/assignment1/plan.json
 
       - name: deploy to github pages
         uses: peaceiris/actions-gh-pages@v4
