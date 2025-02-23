@@ -13,10 +13,10 @@ terraform {
 
 terraform {
   backend "s3" {
-    bucket         = "terraform-state-881490090314"
-    key            = "terraform.tfstate"
+    bucket         = "assignment1-state-881490090314"
+    key            = "assignment1.tfstate"
     region         = "us-east-1"
-    dynamodb_table = "terraform-state-lock"
+    dynamodb_table = "assignment1-state-lock"
     encrypt        = true
   }
 }
