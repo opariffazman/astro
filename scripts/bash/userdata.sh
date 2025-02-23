@@ -2,8 +2,8 @@
 
 LOG_FILE="/var/log/userdata.log"
 
-TIER_NAME=${TIER_NAME:-default_tier}
-TIER_PORT=${TIER_PORT:-8080}
+TIER_NAME="$${TIER_NAME}"
+TIER_PORT="$${TIER_PORT}"
 
 log() {
     echo "$(date +'%Y-%m-%d %H:%M:%S') $1" | tee -a $LOG_FILE
@@ -38,7 +38,7 @@ const requestHandler = (req, res) => {
 
 const server = http.createServer(requestHandler);
 server.listen(port, () => {
-    console.log(\`Server running on port \${TIER_PORT}\`);
+    console.log("Server running on port " + port);
 });
 EOF
 
