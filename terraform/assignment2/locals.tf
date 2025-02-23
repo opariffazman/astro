@@ -1,5 +1,4 @@
 locals {
-  github_repo_name = "opariffazman/astro"
   project_name = "astro"
   managed_by   = "terraform"
 
