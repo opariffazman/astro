@@ -44,7 +44,33 @@ terraform apply tfplan
 aws eks update-kubeconfig --name astro
 ```
 
+## Delete AWS VPC CNI
+```
+kubectl delete daemonset -n kube-system aws-node
+```
+
 ## Install Calico
 ```
 kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.29.2/manifests/tigera-operator.yaml
+```
+
+## Configure Calico
+```
+kubectl create -f - <<EOF
+kind: Installation
+apiVersion: operator.tigera.io/v1
+metadata:
+  name: default
+spec:
+  kubernetesProvider: EKS
+  cni:
+    type: Calico
+  calicoNetwork:
+    bgp: Disabled
+EOF
+```
+
+## Add node to cluster
+```
+eksctl create nodegroup --cluster astro --node-type t2.micro --max-pods-per-node 1
 ```

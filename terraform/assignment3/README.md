@@ -27,3 +27,5 @@ terraform init
 terraform plan -out=tfplan
 terraform apply tfplan
 ```
+
+- Make changes to any of the files inside nodejs/assignment3 to trigger automated build and deployment on GitHub
