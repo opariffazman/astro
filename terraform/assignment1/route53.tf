@@ -1,51 +1,38 @@
-variable "zone_name" {
-  default = "astro.opariffazman.com"
+locals {
+  zone_name = "astro.opariffazman.com"
 }
 
-module "route53_zones" {
-  source  = "terraform-aws-modules/route53/aws//modules/zones"
-  version = "4.1.0"
+resource "aws_route53_zone" "private" {
+  name = local.zone_name
 
-  zones = {
-    "${var.zone_name}" = {
-      comment = "Private hosted zone for ${var.project_name} applications"
-      tags    = var.tags
-      vpc = [{
-        vpc_id = module.vpc.vpc_id
-      }]
-    }
+  vpc {
+    vpc_id = module.vpc.vpc_id
   }
 
   tags = var.tags
 }
 
-module "route53_records" {
-  source  = "terraform-aws-modules/route53/aws//modules/records"
-  version = "4.1.0"
+resource "aws_route53_record" "app" {
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "app.${local.zone_name}"
+  type    = "A"
 
-  # https://github.com/terraform-aws-modules/terraform-aws-route53/issues/101
-  zone_name = module.route53_zones.route53_static_zone_name["${var.zone_name}"]
+  alias {
+    name                   = module.app_alb.dns_name
+    zone_id                = module.app_alb.zone_id
+    evaluate_target_health = true
+  }
+}
 
-  records = [
-    {
-      name = "app"
-      type = "A"
-      alias = {
-        name    = module.app_alb.dns_name
-        zone_id = module.app_alb.zone_id
-      }
-    },
-    {
-      name    = "db"
-      type    = "CNAME"
-      records = [module.rds.db_instance_address]
-    }
-  ]
-
-  depends_on = [module.route53_zones]
+resource "aws_route53_record" "db" {
+  zone_id = aws_route53_zone.private.zone_id
+  name    = "db.${local.zone_name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [module.rds.db_instance_address]
 }
 
 output "route53_nameservers" {
   description = "Nameservers for the hosted zone"
-  value       = module.route53_zones.route53_zone_name_servers
+  value       = aws_route53_zone.private.name_servers
 }
