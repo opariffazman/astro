@@ -3,12 +3,12 @@ module "vpc" {
   version = "5.19.0"
 
   name = "${local.project_name}-vpc"
-  cidr = "10.0.0.0/16"
+  cidr = local.vpc_cidr
 
   azs              = ["${local.region}a", "${local.region}b"]
-  private_subnets  = [local.private_subnet_1, local.private_subnet_2]
-  public_subnets   = [local.public_subnet_1, local.public_subnet_2]
-  database_subnets = [local.db_subnet_1, local.db_subnet_2]
+  private_subnets  = [local.private_subnets[0], local.private_subnets[1]]
+  public_subnets   = [local.public_subnets[0], local.public_subnets[1]]
+  database_subnets = [local.database_subnets[0], local.database_subnets[1]]
 
   enable_nat_gateway = true
   single_nat_gateway = true
