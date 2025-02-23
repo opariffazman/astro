@@ -5,9 +5,9 @@ variable "db_password" {
 }
 
 locals {
-  project_name = "astro"
-  managed_by   = "terraform"
-  email        = "ariff.tall814@passmail.net"
+  project_name  = "astro"
+  managed_by    = "terraform"
+  email_address = "ariff.tall814@passmail.net"
 
   vpc_cidr         = "10.0.0.0/16"
   public_subnet_1  = "10.0.1.0/24"
