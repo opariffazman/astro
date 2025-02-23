@@ -21,3 +21,19 @@ Resources such as valid subnets, route tables (public, private), security groups
 for data-tier.
 - Proper security groups and IAM roles should be in place.
 - Architecture Diagram is proper referenced with configuration enabled via terraform or cloudformation.
+
+# Steps
+
+## Setup backend
+```
+cd cloudformation
+aws cloudformation create-stack --stack-name assignment1-tf-state-resources --template-body file://assignment1.yaml
+```
+
+## Setup EKS Cluster
+```
+cd terraform/assignment1
+terraform init
+terraform plan -out=tfplan
+terraform apply tfplan
+```
