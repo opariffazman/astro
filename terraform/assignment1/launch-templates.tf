@@ -1,3 +1,10 @@
+locals {
+  app_port = 8080
+  app_name = "app"
+  web_port = 8080
+  web_name = "web"
+}
+
 resource "aws_launch_template" "app" {
   name = "${var.project_name}-app-lt"
 
@@ -14,8 +21,8 @@ resource "aws_launch_template" "app" {
   }
 
   user_data = base64encode(templatefile("../../scripts/bash/userdata.sh", {
-    TIER_PORT = 8080
-    TIER_NAME = "app"
+    TIER_PORT = local.app_port
+    TIER_NAME = local.app_name
   }))
 
   tag_specifications {
@@ -40,8 +47,8 @@ resource "aws_launch_template" "web" {
   }
 
   user_data = base64encode(templatefile("../../scripts/bash/userdata.sh", {
-    TIER_PORT = 8080
-    TIER_NAME = "web"
+    TIER_PORT = local.web_port
+    TIER_NAME = local.web_name
   }))
 
   tag_specifications {
