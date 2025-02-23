@@ -6,9 +6,9 @@ locals {
 }
 
 resource "aws_launch_template" "app" {
-  name = "${var.project_name}-app-lt"
-  image_id      = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
+  name                   = "${var.project_name}-app-lt"
+  image_id               = data.aws_ami.ubuntu.id
+  instance_type          = "t2.micro"
   update_default_version = true
 
   iam_instance_profile {
@@ -32,11 +32,11 @@ resource "aws_launch_template" "app" {
 }
 
 resource "aws_launch_template" "web" {
-  name = "${var.project_name}-web-lt"
-  image_id      = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"
+  name                   = "${var.project_name}-web-lt"
+  image_id               = data.aws_ami.ubuntu.id
+  instance_type          = "t2.micro"
   update_default_version = true
-  
+
   iam_instance_profile {
     arn = module.web_iam_role.iam_instance_profile_arn
   }
