@@ -12,7 +12,7 @@ resource "aws_autoscaling_group" "app" {
 
 resource "aws_autoscaling_group" "web" {
   vpc_zone_identifier = module.vpc.public_subnets
-  desired_capacity    = 1
+  desired_capacity    = 0
   max_size            = 1
   min_size            = 0
 
