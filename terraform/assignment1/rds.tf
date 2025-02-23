@@ -2,7 +2,7 @@ module "rds" {
   source  = "terraform-aws-modules/rds/aws"
   version = "6.10.0"
 
-  identifier = "${local.project_name}-db"
+  identifier = "${local.project_name}db"
 
   engine               = "mysql"
   engine_version       = "5.7"
@@ -12,7 +12,7 @@ module "rds" {
   allocated_storage    = 5
   deletion_protection  = false
 
-  db_name  = "${local.project_name}-db"
+  db_name  = "${local.project_name}db"
   username = local.db_username
   password = local.db_password
   port     = 3306
