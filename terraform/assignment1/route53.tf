@@ -1,7 +1,3 @@
-locals {
-  zone_name = "astro.opariffazman.com"
-}
-
 resource "aws_route53_zone" "private" {
   name = local.zone_name
 
@@ -9,7 +5,7 @@ resource "aws_route53_zone" "private" {
     vpc_id = module.vpc.vpc_id
   }
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_route53_record" "app" {
@@ -30,9 +26,4 @@ resource "aws_route53_record" "db" {
   type    = "CNAME"
   ttl     = "300"
   records = [module.rds.db_instance_address]
-}
-
-output "route53_nameservers" {
-  description = "Nameservers for the hosted zone"
-  value       = aws_route53_zone.private.name_servers
 }

@@ -1,12 +1,5 @@
-locals {
-  app_port = 8080
-  app_name = "app"
-  web_port = 8080
-  web_name = "web"
-}
-
 resource "aws_launch_template" "app" {
-  name                   = "${var.project_name}-app-lt"
+  name                   = "${local.project_name}-app-lt"
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
   update_default_version = true
@@ -27,12 +20,12 @@ resource "aws_launch_template" "app" {
 
   tag_specifications {
     resource_type = "instance"
-    tags          = var.tags
+    tags          = local.tags
   }
 }
 
 resource "aws_launch_template" "web" {
-  name                   = "${var.project_name}-web-lt"
+  name                   = "${local.project_name}-web-lt"
   image_id               = data.aws_ami.ubuntu.id
   instance_type          = "t2.micro"
   update_default_version = true
@@ -53,6 +46,6 @@ resource "aws_launch_template" "web" {
 
   tag_specifications {
     resource_type = "instance"
-    tags          = var.tags
+    tags          = local.tags
   }
 }

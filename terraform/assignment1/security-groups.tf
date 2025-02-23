@@ -2,7 +2,7 @@ module "web_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "${var.project_name}-web-sg"
+  name        = "${local.project_name}-web-sg"
   description = "Security group for web"
   vpc_id      = module.vpc.vpc_id
 
@@ -32,21 +32,21 @@ module "web_security_group" {
     }
   ]
 
-  tags = var.tags
+  tags = local.tags
 }
 
 module "app_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "${var.project_name}-app-sg"
+  name        = "${local.project_name}-app-sg"
   description = "Security group for application"
   vpc_id      = module.vpc.vpc_id
 
   ingress_with_source_security_group_id = [
     {
-      from_port                = 8080
-      to_port                  = 8080
+      from_port                = 80
+      to_port                  = 80
       protocol                 = "tcp"
       description              = "Application port"
       source_security_group_id = module.web_security_group.security_group_id
@@ -62,14 +62,14 @@ module "app_security_group" {
     }
   ]
 
-  tags = var.tags
+  tags = local.tags
 }
 
 module "db_security_group" {
   source  = "terraform-aws-modules/security-group/aws"
   version = "5.3.0"
 
-  name        = "${var.project_name}-database-sg"
+  name        = "${local.project_name}-database-sg"
   description = "Security group for database"
   vpc_id      = module.vpc.vpc_id
 
@@ -83,5 +83,5 @@ module "db_security_group" {
     }
   ]
 
-  tags = var.tags
+  tags = local.tags
 }

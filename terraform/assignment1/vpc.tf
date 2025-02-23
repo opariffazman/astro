@@ -2,13 +2,13 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.19.0"
 
-  name = "${var.project_name}-vpc"
+  name = "${local.project_name}-vpc"
   cidr = "10.0.0.0/16"
 
-  azs              = ["${var.aws_region}a", "${var.aws_region}b"]
-  private_subnets  = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets   = ["10.0.101.0/24", "10.0.102.0/24"]
-  database_subnets = ["10.0.201.0/24", "10.0.202.0/24"]
+  azs              = ["${local.region}a", "${local.region}b"]
+  private_subnets  = [local.private_subnet_1, local.private_subnet_1]
+  public_subnets   = [local.public_subnet_1, local.public_subnet_1]
+  database_subnets = [local.db_subnet_1, local.db_subnet_1]
 
   enable_nat_gateway = true
   single_nat_gateway = true
@@ -18,12 +18,12 @@ module "vpc" {
 
   create_database_subnet_group = true
 
-  tags = var.tags
+  tags = local.tags
 }
 
 resource "aws_vpc_endpoint" "ssm" {
   vpc_id             = module.vpc.vpc_id
-  service_name       = "com.amazonaws.${var.aws_region}.ssm"
+  service_name       = "com.amazonaws.${local.region}.ssm"
   vpc_endpoint_type  = "Interface"
   subnet_ids         = module.vpc.private_subnets
   security_group_ids = [module.app_security_group.security_group_id]
@@ -33,7 +33,7 @@ resource "aws_vpc_endpoint" "ssm" {
 
 resource "aws_vpc_endpoint" "ssmmessages" {
   vpc_id             = module.vpc.vpc_id
-  service_name       = "com.amazonaws.${var.aws_region}.ssmmessages"
+  service_name       = "com.amazonaws.${local.region}.ssmmessages"
   vpc_endpoint_type  = "Interface"
   subnet_ids         = module.vpc.private_subnets
   security_group_ids = [module.app_security_group.security_group_id]
@@ -43,7 +43,7 @@ resource "aws_vpc_endpoint" "ssmmessages" {
 
 resource "aws_vpc_endpoint" "ec2messages" {
   vpc_id             = module.vpc.vpc_id
-  service_name       = "com.amazonaws.${var.aws_region}.ec2messages"
+  service_name       = "com.amazonaws.${local.region}.ec2messages"
   vpc_endpoint_type  = "Interface"
   subnet_ids         = module.vpc.private_subnets
   security_group_ids = [module.app_security_group.security_group_id]

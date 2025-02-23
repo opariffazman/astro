@@ -4,7 +4,7 @@ module "app_iam_role" {
 
   create_role             = true
   create_instance_profile = true
-  role_name               = "${var.project_name}-app-role"
+  role_name               = "${local.project_name}-app-role"
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
@@ -22,7 +22,7 @@ module "web_iam_role" {
 
   create_role             = true
   create_instance_profile = true
-  role_name               = "${var.project_name}-web-role"
+  role_name               = "${local.project_name}-web-role"
 
   custom_role_policy_arns = [
     "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"

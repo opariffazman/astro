@@ -2,7 +2,7 @@ module "app_alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "9.13.0"
 
-  name    = "${var.project_name}-app-alb"
+  name    = "${local.project_name}-app-alb"
   vpc_id  = module.vpc.vpc_id
   subnets = module.vpc.private_subnets
 
@@ -10,9 +10,9 @@ module "app_alb" {
 
   target_groups = {
     app-asg = {
-      name             = "${var.project_name}-app-tg"
+      name             = "${local.project_name}-app-tg"
       backend_protocol = "HTTP"
-      backend_port     = 8080
+      backend_port     = local.app_port
       target_type      = "instance"
 
       health_check = {
@@ -31,7 +31,7 @@ module "app_alb" {
   }
   enable_deletion_protection = false
 
-  tags = var.tags
+  tags = local.tags
 }
 
 
@@ -39,7 +39,7 @@ module "web_alb" {
   source  = "terraform-aws-modules/alb/aws"
   version = "9.13.0"
 
-  name    = "${var.project_name}-web-alb"
+  name    = "${local.project_name}-web-alb"
   vpc_id  = module.vpc.vpc_id
   subnets = module.vpc.public_subnets
 
@@ -47,9 +47,9 @@ module "web_alb" {
 
   target_groups = {
     web-asg = {
-      name             = "${var.project_name}-web-tg"
+      name             = "${local.project_name}-web-tg"
       backend_protocol = "HTTP"
-      backend_port     = 8080
+      backend_port     = local.web_port
       target_type      = "instance"
 
       health_check = {
@@ -68,5 +68,5 @@ module "web_alb" {
   }
   enable_deletion_protection = false
 
-  tags = var.tags
+  tags = local.tags
 }

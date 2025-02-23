@@ -1,5 +1,5 @@
 resource "aws_cloudwatch_metric_alarm" "cpu_alarm" {
-  alarm_name          = "${var.project_name}-high-cpu"
+  alarm_name          = "${local.project_name}-high-cpu"
   comparison_operator = "GreaterThanThreshold"
   evaluation_periods  = "2"
   metric_name         = "CPUUtilization"

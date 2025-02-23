@@ -1,3 +1,3 @@
 resource "aws_sns_topic" "sns" {
-  name = "${var.project_name}-sns-topic"
+  name = "${local.project_name}-sns-topic"
 }
