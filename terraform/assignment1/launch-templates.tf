@@ -12,7 +12,7 @@ resource "aws_launch_template" "app" {
   update_default_version = true
 
   iam_instance_profile {
-    arn = module.app_iam_role.iam_instance_profile_arn
+    name = module.app_iam_role.iam_instance_profile_name
   }
 
   network_interfaces {
@@ -38,7 +38,7 @@ resource "aws_launch_template" "web" {
   update_default_version = true
 
   iam_instance_profile {
-    arn = module.web_iam_role.iam_instance_profile_arn
+    name = module.web_iam_role.iam_instance_profile_name
   }
 
   network_interfaces {
