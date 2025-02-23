@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'CloudFormation template to create S3 bucket and DynamoDB table for Terraform state management'
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: assignment2
+    Description: Name prefix for the resources
+
+Resources:
+  TerraformStateBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    Properties:
+      BucketName: !Sub ${ProjectName}-state-${AWS::AccountId}
+      VersioningConfiguration:
+        Status: Enabled
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  TerraformStateBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref TerraformStateBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: EnforceHTTPS
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource: 
+              - !Sub ${TerraformStateBucket.Arn}/*
+              - !GetAtt TerraformStateBucket.Arn
+            Condition:
+              Bool:
+                aws:SecureTransport: false
+
+  TerraformStateTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub ${ProjectName}-state-lock
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: LockID
+          AttributeType: S
+      KeySchema:
+        - AttributeName: LockID
+          KeyType: HASH
+
+Outputs:
+  StateBucketName:
+    Description: Name of the S3 bucket for Terraform state
+    Value: !Ref TerraformStateBucket
+
+  StateBucketArn:
+    Description: ARN of the S3 bucket for Terraform state
+    Value: !GetAtt TerraformStateBucket.Arn
+
+  StateTableName:
+    Description: Name of the DynamoDB table for state locking
+    Value: !Ref TerraformStateTable
+
+  StateTableArn:
+    Description: ARN of the DynamoDB table for state locking
+    Value: !GetAtt TerraformStateTable.Arn
