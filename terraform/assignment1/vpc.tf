@@ -15,12 +15,41 @@ module "vpc" {
 
   enable_dns_hostnames = true
   enable_dns_support   = true
-
+  
   create_database_subnet_group = true
 
   tags = var.tags
 }
 
+resource "aws_vpc_endpoint" "ssm" {
+  vpc_id             = module.vpc.vpc_id
+  service_name       = "com.amazonaws.${var.aws_region}.ssm"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = module.vpc.private_subnets
+  security_group_ids = [module.app_security_group.security_group_id]
+
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ssmmessages" {
+  vpc_id             = module.vpc.vpc_id
+  service_name       = "com.amazonaws.${var.aws_region}.ssmmessages"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = module.vpc.private_subnets
+  security_group_ids = [module.app_security_group.security_group_id]
+
+  private_dns_enabled = true
+}
+
+resource "aws_vpc_endpoint" "ec2messages" {
+  vpc_id             = module.vpc.vpc_id
+  service_name       = "com.amazonaws.${var.aws_region}.ec2messages"
+  vpc_endpoint_type  = "Interface"
+  subnet_ids         = module.vpc.private_subnets
+  security_group_ids = [module.app_security_group.security_group_id]
+
+  private_dns_enabled = true
+}
 
 output "vpc_id" {
   description = "The ID of the VPC"
