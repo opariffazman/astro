@@ -28,6 +28,8 @@ resource "aws_autoscaling_group" "app" {
     }
     triggers = ["tag"]
   }
+
+  target_group_arns = [module.app_alb.target_groups["app-asg"].arn]
 }
 
 resource "aws_autoscaling_group" "web" {
@@ -60,4 +62,6 @@ resource "aws_autoscaling_group" "web" {
     }
     triggers = ["tag"]
   }
+
+  target_group_arns = [module.web_alb.target_groups["web-asg"].arn]
 }
