@@ -1,1 +1,3 @@
-aws cloudformation create-stack --stack-name terraform-state-resources --template-body file://terraform-state-resources.yaml
+aws cloudformation create-stack --stack-name assignment1-tf-state-resources --template-body file://assignment1.yaml
+
+aws cloudformation create-stack --stack-name assignment2-tf-state-resources --template-body file://assignment2.yaml
