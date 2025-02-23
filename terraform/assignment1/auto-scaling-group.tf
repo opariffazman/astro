@@ -1,5 +1,5 @@
 resource "aws_autoscaling_group" "app" {
-  name                = "${var.project_name}-web-asg"
+  name                = "${var.project_name}-app-asg"
   vpc_zone_identifier = module.vpc.private_subnets
   desired_capacity    = 1
   max_size            = 1
