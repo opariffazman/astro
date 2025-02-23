@@ -6,9 +6,9 @@ module "vpc" {
   cidr = "10.0.0.0/16"
 
   azs              = ["${local.region}a", "${local.region}b"]
-  private_subnets  = [local.private_subnet_1, local.private_subnet_1]
-  public_subnets   = [local.public_subnet_1, local.public_subnet_1]
-  database_subnets = [local.db_subnet_1, local.db_subnet_1]
+  private_subnets  = [local.private_subnet_1, local.private_subnet_2]
+  public_subnets   = [local.public_subnet_1, local.public_subnet_2]
+  database_subnets = [local.db_subnet_1, local.db_subnet_2]
 
   enable_nat_gateway = true
   single_nat_gateway = true
