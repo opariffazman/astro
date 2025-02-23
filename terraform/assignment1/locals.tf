@@ -29,6 +29,17 @@ locals {
   db_username = "admin"
   db_password = var.db_password
 
+  app_policies = [
+    "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
+    "arn:aws:iam::aws:policy/CloudWatchFullAccess",
+    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  ]
+
+  web_policies = [
+    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+  ]
+
   ssm_services = {
     "ec2messages" : {
       "name" : "com.amazonaws.${local.region}.ec2messages"
@@ -41,7 +52,6 @@ locals {
     }
   }
 
-  region         = "us-east-1"
-  ubuntu_version = "jammy-22.04"
-  tags           = { Environment = "assignment1", Project = local.project_name, ManagedBy = local.managed_by }
+  region = "us-east-1"
+  tags   = { Environment = "assignment1", Project = local.project_name, ManagedBy = local.managed_by }
 }
