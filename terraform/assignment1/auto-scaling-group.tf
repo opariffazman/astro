@@ -9,7 +9,10 @@ module "app_asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "8.1.0"
 
-  name = "${var.project_name}-app-asg"
+  name                    = "${var.project_name}-app-asg"
+
+  create_launch_template = false
+  launch_template_id      = aws_launch_template.app.id
 
   min_size         = 0
   max_size         = 1
@@ -19,31 +22,12 @@ module "app_asg" {
   health_check_type         = "ELB"
   vpc_zone_identifier       = module.vpc.private_subnets
 
-  instance_type = "t2.micro"
-  image_id      = data.aws_ami.ubuntu.id
-  user_data = base64encode(templatefile("../../scripts/bash/userdata.sh", {
-    TIER_PORT = local.app_port
-    TIER_NAME = local.app_name
-  }))
-
-  create_launch_template = true
-  launch_template_name   = "${var.project_name}-app-launch-template"
-
-  instance_refresh = {
-    strategy = "Rolling"
-    preferences = {
-      min_healthy_percentage = 50
-    }
-  }
-
   traffic_source_attachments = {
     app-alb = {
       traffic_source_identifier = module.app_alb.target_groups["app-asg"].arn
       traffic_source_type       = "elbv2"
     }
   }
-
-  iam_role_name = module.app_iam_role.iam_instance_profile_id
 
   tags = var.tags
 }
@@ -52,7 +36,10 @@ module "web_asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "8.1.0"
 
-  name = "${var.project_name}-web-asg"
+  name                    = "${var.project_name}-web-asg"
+
+  create_launch_template = false
+  launch_template_id      = aws_launch_template.web.id
 
   min_size         = 0
   max_size         = 1
@@ -62,25 +49,8 @@ module "web_asg" {
   health_check_type         = "ELB"
   vpc_zone_identifier       = module.vpc.public_subnets
 
-  instance_type = "t2.micro"
-  image_id      = data.aws_ami.ubuntu.id
-  user_data = base64encode(templatefile("../../scripts/bash/userdata.sh", {
-    TIER_PORT = local.web_port
-    TIER_NAME = local.web_name
-  }))
-
-  create_launch_template = true
-  launch_template_name   = "${var.project_name}-web-launch-template"
-
-  instance_refresh = {
-    strategy = "Rolling"
-    preferences = {
-      min_healthy_percentage = 50
-    }
-  }
-
   traffic_source_attachments = {
-    app-alb = {
+    web-alb = {
       traffic_source_identifier = module.web_alb.target_groups["web-asg"].arn
       traffic_source_type       = "elbv2"
     }
