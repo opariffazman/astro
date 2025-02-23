@@ -1,32 +1,57 @@
-module "app_iam_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.52.2"
+resource "aws_iam_role" "app" {
+  name = "app-iam-role"
 
-  create_role             = true
-  create_instance_profile = true
-  role_name               = "${local.project_name}-app-role"
-
-  custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonRDSFullAccess",
-    "arn:aws:iam::aws:policy/CloudWatchFullAccess",
-    "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess",
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-  ]
-
-  trusted_role_services = ["ec2.amazonaws.com"]
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
 }
 
-module "web_iam_role" {
-  source  = "terraform-aws-modules/iam/aws//modules/iam-assumable-role"
-  version = "5.52.2"
+resource "aws_iam_role_policy_attachment" "app" {
+  for_each = toset(local.app_policies)
 
-  create_role             = true
-  create_instance_profile = true
-  role_name               = "${local.project_name}-web-role"
+  role       = aws_iam_role.app.name
+  policy_arn = each.value
+}
 
-  custom_role_policy_arns = [
-    "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-  ]
+resource "aws_iam_instance_profile" "app" {
+  name = "app-iam-instance-profile"
+  role = aws_iam_role.app.name
+}
 
-  trusted_role_services = ["ec2.amazonaws.com"]
+resource "aws_iam_role" "web" {
+  name = "web-iam-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "web" {
+  for_each = toset(local.web_policies)
+
+  role       = aws_iam_role.web.name
+  policy_arn = each.value
+}
+
+resource "aws_iam_instance_profile" "web" {
+  name = "web-iam-instance-profile"
+  role = aws_iam_role.web.name
 }
