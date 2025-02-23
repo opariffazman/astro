@@ -29,6 +29,7 @@ module "app_alb" {
       create_attachment = false
     }
   }
+
   enable_deletion_protection = false
 
   tags = local.tags
@@ -66,6 +67,7 @@ module "web_alb" {
       create_attachment = false
     }
   }
+
   enable_deletion_protection = false
 
   tags = local.tags
