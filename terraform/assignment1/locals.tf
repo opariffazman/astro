@@ -25,8 +25,21 @@ locals {
   web_port = 80
   web_name = "web"
 
+  db_port     = 3306
   db_username = "admin"
   db_password = var.db_password
+
+  ssm_services = {
+    "ec2messages" : {
+      "name" : "com.amazonaws.${local.region}.ec2messages"
+    },
+    "ssm" : {
+      "name" : "com.amazonaws.${local.region}.ssm"
+    },
+    "ssmmessages" : {
+      "name" : "com.amazonaws.${local.region}.ssmmessages"
+    }
+  }
 
   region         = "us-east-1"
   ubuntu_version = "jammy-22.04"
