@@ -9,10 +9,10 @@ resource "aws_launch_template" "app" {
   name = "${var.project_name}-app-lt"
 
   image_id      = data.aws_ami.ubuntu.id
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
 
   iam_instance_profile {
-    name = module.app_iam_role.iam_instance_profile_id
+    arn = module.app_iam_role.iam_instance_profile_arn
   }
 
   network_interfaces {
@@ -35,10 +35,10 @@ resource "aws_launch_template" "web" {
   name = "${var.project_name}-web-lt"
 
   image_id      = data.aws_ami.ubuntu.id
-  instance_type = "t2.nano"
+  instance_type = "t2.micro"
 
   iam_instance_profile {
-    name = module.web_iam_role.iam_instance_profile_id
+    arn = module.web_iam_role.iam_instance_profile_arn
   }
 
   network_interfaces {
