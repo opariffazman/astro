@@ -1,3 +1,10 @@
+locals {
+  app_port = 8080
+  app_name = "app"
+  web_port = 8080
+  web_name = "web"
+}
+
 module "app_asg" {
   source  = "terraform-aws-modules/autoscaling/aws"
   version = "8.1.0"
@@ -14,7 +21,10 @@ module "app_asg" {
 
   instance_type = "t2.micro"
   image_id      = data.aws_ami.ubuntu.id
-  user_data     = base64encode(file("../../scripts/bash/app-userdata.sh"))
+  user_data = base64encode(templatefile("../../scripts/bash/userdata.sh", {
+    TIER_PORT = local.app_port
+    TIER_NAME = local.app_name
+  }))
 
   create_launch_template = true
   launch_template_name   = "${var.project_name}-app-launch-template"
@@ -54,7 +64,10 @@ module "web_asg" {
 
   instance_type = "t2.micro"
   image_id      = data.aws_ami.ubuntu.id
-  user_data     = base64encode(file("../../scripts/bash/web-userdata.sh"))
+  user_data = base64encode(templatefile("../../scripts/bash/userdata.sh", {
+    TIER_PORT = local.web_port
+    TIER_NAME = local.web_name
+  }))
 
   create_launch_template = true
   launch_template_name   = "${var.project_name}-web-launch-template"
