@@ -7,7 +7,7 @@ resource "aws_iam_role" "github_actions_role" {
     Version = "2012-10-17"
     Statement = [
       {
-        Action = "sts:AssumeRole"
+        Action = "sts:AssumeRoleWithWebIdentity"
         Effect = "Allow"
         Principal = {
           Federated = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/token.actions.githubusercontent.com"
@@ -15,6 +15,9 @@ resource "aws_iam_role" "github_actions_role" {
         Condition = {
           StringLike = {
             "token.actions.githubusercontent.com:sub": "repo:${local.github_repo_name}:*"
+          }
+          StringEquals = {
+             "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
           }
         }
       }
