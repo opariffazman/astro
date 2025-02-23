@@ -2,7 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "20.33.1"
 
-  cluster_name                   = var.project_name
+  cluster_name                   = local.project_name
   cluster_version                = "1.32"
   cluster_endpoint_public_access = true
 
@@ -16,5 +16,5 @@ module "eks" {
   vpc_id     = data.terraform_remote_state.network.outputs.vpc_id
   subnet_ids = data.terraform_remote_state.network.outputs.private_subnets
 
-  tags = var.tags
+  tags = local.tags
 }
