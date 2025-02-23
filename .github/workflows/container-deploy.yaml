@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - 'nodejs/**'
+      - .github/workflows/container-deploy.yaml
     branches:
       - main
   workflow_dispatch:
