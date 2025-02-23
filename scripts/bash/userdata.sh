@@ -1,11 +1,12 @@
 #!/bin/bash
 
 LOG_FILE="/var/log/userdata.log"
-TIER_PORT="${TIER_PORT}"
-TIER_NAME="${TIER_NAME}"
+
+TIER_NAME=${TIER_NAME:-default_tier}
+TIER_PORT=${TIER_PORT:-8080}
 
 log() {
-  echo "$(date +'%Y-%m-%d %H:%M:%S') $1" | tee -a $LOG_FILE
+    echo "$(date +'%Y-%m-%d %H:%M:%S') $1" | tee -a $LOG_FILE
 }
 
 export DEBIAN_FRONTEND=noninteractive
@@ -77,7 +78,7 @@ EOF
 
 log "Enabling Nginx configuration..."
 ln -s /etc/nginx/sites-available/${TIER_NAME} /etc/nginx/sites-enabled/
-rm /etc/nginx/sites-enabled/default
+rm -f /etc/nginx/sites-enabled/default
 
 log "Restarting Nginx..."
 systemctl restart nginx
