@@ -65,11 +65,3 @@ output "public_subnets" {
   description = "List of IDs of public subnets"
   value       = module.vpc.public_subnets
 }
-
-output "nat_gateway_ids" {
-  value = module.vpc.natgw_ids
-}
-
-output "private_route_table_ids" {
-  value = module.vpc.private_route_table_ids
-}
