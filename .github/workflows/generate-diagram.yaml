@@ -1,9 +1,10 @@
-name: run-terraform-visual
+name: generate-diagram
 
 on:
   push:
     paths:
       - 'terraform/assignment1/plan.json'
+      - '.github/workflows/generate-diagram.yaml'
     branches:
       - main
   workflow_dispatch:
@@ -24,6 +25,10 @@ jobs:
 
       - name: run terraform-visual
         run: terraform-visual --plan terraform/assignment1/plan.json
+
+      - name: update repository links
+        run: |
+          find terraform-visual-report -type f -name "*.html" -exec sed -i 's|href="https://github.com/hieven/terraform-visual"|href="https://github.com/opariffazman/astro"|g' {} +        
 
       - name: deploy to github pages
         uses: peaceiris/actions-gh-pages@v4

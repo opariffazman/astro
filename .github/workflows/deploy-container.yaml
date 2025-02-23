@@ -1,10 +1,10 @@
-name: container-deploy
+name: deploy-container
 
 on:
   push:
     paths:
       - 'nodejs/**'
-      - '.github/workflows/container-deploy.yaml'
+      - '.github/workflows/deploy-container.yaml'
       - 'terraform/assignment3/**'
     branches:
       - main
@@ -20,7 +20,7 @@ env:
   EKS_CLUSTER: astro
   
 jobs:
-  container-deploy:
+  deploy-container:
     runs-on: ubuntu-latest
     
     steps:
