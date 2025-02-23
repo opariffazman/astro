@@ -4,7 +4,8 @@ on:
   push:
     paths:
       - 'nodejs/**'
-      - .github/workflows/container-deploy.yaml
+      - '.github/workflows/container-deploy.yaml'
+      - 'terraform/assignment3/**'
     branches:
       - main
   workflow_dispatch:
