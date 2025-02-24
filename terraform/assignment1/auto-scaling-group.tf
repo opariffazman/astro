@@ -8,7 +8,7 @@ module "app_asg" {
   security_groups     = [module.app_security_group.security_group_id]
   min_size            = 0
   max_size            = 1
-  desired_capacity    = 1
+  desired_capacity    = 0
 
   iam_instance_profile_arn = aws_iam_instance_profile.app.arn
 
@@ -25,6 +25,26 @@ module "app_asg" {
     TIER_PORT = local.app_port
     TIER_NAME = local.app_name
   }))
+
+  mixed_instances_policy = {
+    instances_distribution = {
+      on_demand_base_capacity                  = 0 # No On-Demand instances
+      on_demand_percentage_above_base_capacity = 0 # 100% Spot instances
+      spot_allocation_strategy                 = "capacity-optimized"
+    }
+
+    override = [
+      {
+        instance_type     = "t2.micro"
+        weighted_capacity = "2"
+      },
+      {
+        instance_type     = "t3.micro"
+        weighted_capacity = "1"
+      },
+    ]
+  }
+
 }
 
 module "web_asg" {
@@ -54,6 +74,25 @@ module "web_asg" {
     TIER_PORT = local.web_port
     TIER_NAME = local.web_name
   }))
+
+  mixed_instances_policy = {
+    instances_distribution = {
+      on_demand_base_capacity                  = 0 # No On-Demand instances
+      on_demand_percentage_above_base_capacity = 0 # 100% Spot instances
+      spot_allocation_strategy                 = "capacity-optimized"
+    }
+
+    override = [
+      {
+        instance_type     = "t2.micro"
+        weighted_capacity = "2"
+      },
+      {
+        instance_type     = "t3.micro"
+        weighted_capacity = "1"
+      },
+    ]
+  }
 
   network_interfaces = [
     {
