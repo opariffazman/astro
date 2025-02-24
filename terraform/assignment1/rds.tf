@@ -5,9 +5,9 @@ module "rds" {
   identifier = "${local.project_name}db"
 
   engine               = "mysql"
-  engine_version       = "5.7"
-  family               = "mysql5.7"
-  major_engine_version = "5.7"
+  engine_version       = "8.0"
+  family               = "mysql8.0"
+  major_engine_version = "8.0"
   instance_class       = "db.t3.micro"
   allocated_storage    = 5
   deletion_protection  = false
